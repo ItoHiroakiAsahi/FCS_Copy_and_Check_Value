@@ -63,7 +63,7 @@ def make_diff_red(target_file_path: str, referred_file_path: str, save_path: str
                             settings.OUT_PJ_INFO_PARAMS.OUT_OF_PATTERN_CELL_LIST, 'check')
             l = check_info_sheets.check_cell_address_list_out_pj_info(target_ws, referred_ws)
         for address in l:
-            target_ws.Range(address).Font.Color = Color.RED
+            target_ws.Range(address).Font.Color = Color.RED.value
 
     # 幹材積量算定シートの差分を確認
     for sheet_name in check_rsh_sheets.RSH_SHEET_LIST:
@@ -78,7 +78,7 @@ def make_diff_red(target_file_path: str, referred_file_path: str, save_path: str
                             settings.TENNEN_RSH_PARAMS.OUT_OF_PATTERN_CELL_LIST, 'check')
             l = check_rsh_sheets.check_cell_address_list_tennen_rsh(target_ws, referred_ws)
         for address in l:
-            target_ws.Range(address).Font.Color = Color.RED
+            target_ws.Range(address).Font.Color = Color.RED.value
 
     if save_path == '':
         L = len('.xlsx')

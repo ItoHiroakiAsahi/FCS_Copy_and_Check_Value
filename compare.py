@@ -105,5 +105,5 @@ def _make_red(target_ws, address: str) -> None:
     ----------
     None
     """
-    target_ws.Range(address).Font.Color = Color.RED
+    target_ws.Range(address).Font.Color = Color.RED.value
     return
