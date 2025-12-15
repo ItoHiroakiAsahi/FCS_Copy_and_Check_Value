@@ -71,10 +71,10 @@ def _check_cell_address_list_rsh(target_ws, referred_ws, col_offset: int, row_of
     target_species_rank_list = _species_rank_list(target_value, col_interval)
     referred_species_rank_list = _species_rank_list(referred_value, col_interval)
     for species_rank in target_species_rank_list:
-        if species_rank in referred_species_rank_list:
-            t_index = target_species_rank_list.index(species_rank)
+        t_index = target_species_rank_list.index(species_rank)
+        t_col = t_index * col_interval
+        if species_rank in referred_species_rank_list:        
             r_index = referred_species_rank_list.index(species_rank)
-            t_col = t_index * col_interval
             r_col = r_index * col_interval
             for age in range(1, max_age):
                 if target_value[age + 2][t_col] != referred_value[age + 2][r_col]:
@@ -85,7 +85,7 @@ def _check_cell_address_list_rsh(target_ws, referred_ws, col_offset: int, row_of
             for age in range(1, max_age):
                 check_cell_address_list.append('{}{}'.format(
                         utils.toAlpha3(t_col + col_offset + 1),
-                        age + row_offset.ROW_OFFSET + 1))
+                        age + row_offset + 1))
     return check_cell_address_list
 
 def check_cell_address_list_ikusei_rsh(target_ws, referred_ws) -> List[str]:
