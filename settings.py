@@ -153,7 +153,7 @@ def _OTHER_PARTICIPANTS_CHECK_LIST() -> list:
                 down = i * OTHER_PARTICIPANTS_PARAMS.ROW_INTERVAL))
     return l
 
-def _OTHER_PARTICIPANTS_COPY_LIST() -> list:
+def _OTHER_PARTICIPANTS_COPY_LIST() -> List[str]:
     """概要
     代表以外のプロジェクト実施者もしくはプログラム型運営・管理者の書き込みセルを指定するlist型を作成。
     
@@ -173,7 +173,7 @@ def _OTHER_PARTICIPANTS_COPY_LIST() -> list:
                 down = i * OTHER_PARTICIPANTS_PARAMS.ROW_INTERVAL))
     return l
 
-def _SKK_CHANGES_CHECK_LIST() -> list:
+def _SKK_CHANGES_CHECK_LIST() -> List[str]:
     """概要
     森林経営計画の適用条件１への適用と計画の変遷（FO-001）の値の比較をするセルを指定するlist型を作成。
     
@@ -200,7 +200,7 @@ def _SKK_CHANGES_CHECK_LIST() -> list:
                 l.append(utils.move_range_address(cell, right=right, down=down))
     return l
 
-def _SKK_CHANGES_COPY_LIST() -> list:
+def _SKK_CHANGES_COPY_LIST() -> List[str]:
     """概要
     森林経営計画の適用条件１への適用と計画の変遷（FO-001）の書き込みセルを指定するlist型を作成。
     
@@ -227,7 +227,7 @@ def _SKK_CHANGES_COPY_LIST() -> list:
                 l.append(utils.move_range_address(cell, right=right, down=down))
     return l
 
-def _MULTIPLE_SKK_INFO_CHECK_LIST() -> list:
+def _MULTIPLE_SKK_INFO_CHECK_LIST() -> List[str]:
     """概要
     2.2 複数森林経営計画用（FO-001）の値の比較をするセルを指定するlist型を作成。
     
@@ -247,7 +247,7 @@ def _MULTIPLE_SKK_INFO_CHECK_LIST() -> list:
                 right = i * MULTIPLE_SKK_INFO_PARAMS.COL_INTERVAL))
     return l
 
-def _MULTIPLE_SKK_INFO_COPY_LIST() -> list:
+def _MULTIPLE_SKK_INFO_COPY_LIST() -> List[str]:
     """概要
     2.2 複数森林経営計画用（FO-001）の書き込みセルを指定するlist型を作成。
     
@@ -267,7 +267,7 @@ def _MULTIPLE_SKK_INFO_COPY_LIST() -> list:
                 right = i * MULTIPLE_SKK_INFO_PARAMS.COL_INTERVAL))
     return l
 
-def _IN_PJ_HWP_CHECK_LIST() -> list:
+def _IN_PJ_HWP_CHECK_LIST() -> List[str]:
     """概要"""
     l = []
     for col in IN_PJ_HWP_PARAMS.SPECIES_CHECK_COLS:

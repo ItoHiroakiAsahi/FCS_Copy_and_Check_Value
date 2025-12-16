@@ -102,7 +102,7 @@ def from_cell_address_to_column_row_int(address: str) -> Tuple[int, int]:
     address_tuple = from_cell_address_to_column_row_letter(address)
     return (from_alpha_to_num(address_tuple[0]), int(address_tuple[1]))
 
-def from_range_address_to_column_row_int(address: str) -> Tuple[Tuple[int, int], Tuple[int, int]]:
+def from_range_address_to_column_row_int(address: str) -> Tuple[Tuple[int]]:
     """概要
     セル範囲を表すstr型を左上のセル、右下のセルそれぞれの列番号、行番号のint型を格納したtuple型に変換する。
     例：A1:B2→((1, 1), (2, 2))
@@ -197,8 +197,7 @@ def move_range_address(range: str, right: int = 0, down: int = 0) -> str:
     else:
         return move_cell_address(range, right, down)
     
-def relative_cell_address_loc(target_cell_loc: Tuple[int, int], referred_cell_loc: Tuple[int, int]) \
-    -> Tuple[int, int]:
+def relative_cell_address_loc(target_cell_loc: Tuple[int], referred_cell_loc: Tuple[int]) -> Tuple[int]:
     """概要
     参照セルを起点とするターゲットセルの相対座標をtuple型で返す。
 
@@ -221,7 +220,7 @@ def relative_cell_address_loc(target_cell_loc: Tuple[int, int], referred_cell_lo
         raise ValueError('セルの指定範囲が不適です。{}'.format(target_cell_loc, referred_cell_loc))
     return relative_cell_loc
 
-def relative_range_address_loc(target_address: str, referred_cell_loc: Tuple[int, int]) -> Tuple[int, int]:
+def relative_range_address_loc(target_address: str, referred_cell_loc: Tuple[int]) -> Tuple[Tuple[int]]:
     """概要
     参照セルを起点とするターゲット範囲の相対座標をtuple型で返す。
 
@@ -371,7 +370,7 @@ def get_cell_address_from_range_address(range_address: str, loc: str = 'top_left
     else:
         return range_address
     
-def from_range_address_to_each_col_row_list(range_address: str) -> Tuple[List[str], List[str]]:
+def from_range_address_to_each_col_row_list(range_address: str) -> Tuple[List[str]]:
     col_row_loc = from_range_address_to_column_row_int(range_address)
     col_list = [toAlpha3(c_num) for c_num in range(col_row_loc[0][0], col_row_loc[1][0] + 1)]
     row_list = [str(r_num) for r_num in range(col_row_loc[0][1], col_row_loc[1][1] + 1)]
