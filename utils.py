@@ -9,28 +9,28 @@ ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'
             'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 def toAlpha3(num: int) -> str:
-        """概要
-        列番号をアルファベットの文字列に変換する。
-        openpyxlのライブラリを使うのが一般的だが、そのためだけにimportするのが面倒なので自作。
+    """概要
+    列番号をアルファベットの文字列に変換する。
+    openpyxlのライブラリを使うのが一般的だが、そのためだけにimportするのが面倒なので自作。
 
-        Parameters
-        ----------
-        num: int
-            変換する列番号を表すint型。
-        
-        Returns
-        ----------
-        Alpha: str
-            変換された列名を表すstr型。
-        """
-        h = int((num - 1 - 26) / (26 * 26))
-        i = int((num - 1 - (h * 26 * 26)) / 26)
-        j = num - (i * 26) - (h * 26 * 26)
-        Alpha = ''
-        for k in h, i, j:
-            if k != 0:
-                Alpha += chr(k + 64)
-        return Alpha
+    Parameters
+    ----------
+    num: int
+        変換する列番号を表すint型。
+    
+    Returns
+    ----------
+    Alpha: str
+        変換された列名を表すstr型。
+    """
+    h = int((num - 1 - 26) / (26 * 26))
+    i = int((num - 1 - (h * 26 * 26)) / 26)
+    j = num - (i * 26) - (h * 26 * 26)
+    Alpha = ''
+    for k in h, i, j:
+        if k != 0:
+            Alpha += chr(k + 64)
+    return Alpha
 
 def from_alpha_to_num(alpha: str) -> int:
     """概要
@@ -278,37 +278,6 @@ def from_range_address_list_to_each_cell_adress_list(range_list: list) -> list:
             cell_address_list.append(range_val)
     return cell_address_list
 
-# def _duplicate_range_address_pattern(range_list: List[str], col_interval: int = 1, col_pattern_num: int = 1, 
-#                             row_interval: int = 1, row_pattern_num: int = 1) -> List[str]:
-#     """概要
-#     範囲を指定するstr型を格納したlist型を受け取り、列方向及び行方向にコピーした範囲を表すstr型を格納する
-#     list型を返す。
-
-#     Parameters
-#     -----------
-#     range_list: list
-#         範囲を指定するstr型を格納したlist型。
-
-#     col_inteval: int, default 1
-#         列方向にコピーする間隔を示すint型。
-
-#     col_pattern_num: int, default 1
-#         列方向にコピーする数を示すint型。
-
-#     row_interval: in, default 1
-#         行方向にコピーする間隔を示すint型。
-
-#     row_pattern_num: int, default 1
-#         行方向にコピーする数を示すint型。
-#     """
-#     duplicated_range_list = []
-#     for range in range_list:
-#         for i in range(0, col_pattern_num):
-#             for j in range(0, row_pattern_num):
-#                 duplicated_range_list.append(
-#                     move_range_address(range, i*col_interval, j*row_interval))
-#     return  duplicated_range_list
-
 def get_max_range(range1: str, range2: str) -> str:
     """概要
     セルは範囲を表す2つの文字列から、両方を含む最小の範囲を示すstr型を返す。
@@ -371,6 +340,20 @@ def get_cell_address_from_range_address(range_address: str, loc: str = 'top_left
         return range_address
     
 def from_range_address_to_each_col_row_list(range_address: str) -> Tuple[List[str]]:
+    """概要
+    セルの範囲を示すstr型を受け取り、範囲に含まれるすべての列名、行名をlist型に格納した上で、
+    両者をtuple型に格納して返す。
+
+    Parameters
+    ----------
+    range_address: str
+        範囲を示すstr型。
+    
+    Returns
+    ----------
+    t: Tuple[List[str]]
+        range_addressに含まれるすべての列名、行名をlist型に格納したtuple型。
+    """
     col_row_loc = from_range_address_to_column_row_int(range_address)
     col_list = [toAlpha3(c_num) for c_num in range(col_row_loc[0][0], col_row_loc[1][0] + 1)]
     row_list = [str(r_num) for r_num in range(col_row_loc[0][1], col_row_loc[1][1] + 1)]
