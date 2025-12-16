@@ -77,7 +77,7 @@ def _add_forest_name(df: pd.DataFrame, forest_name_col_list: List[str]) -> pd.Da
     df: pd.DataFrame
         林地情報を格納するdataframe型。
 
-    forest_name_col_list: list
+    forest_name_col_list: List[str]
         林地名に関連する情報を持つ列名を格納したlist型。
 
     Returns
@@ -100,7 +100,7 @@ def _forest_info_diff_score(target_forest_info: pd.Series, referred_forest_info:
     target_forest_info, referred_forest_info: pd.Series
         乖離度を調べる林地情報。
 
-    compare_col_num_list: list
+    compare_col_num_list: List[int]
         乖離度を計算する際に使用する列番号のリスト。
 
     Returns
@@ -202,12 +202,12 @@ def _diff_col_num_list(target_forest_info: pd.Series, referred_forest_info: pd.S
     target_forest_info, referred_forest_info: pd.Series
         差分を比較する林地情報
 
-    check_col_num_list: list
+    check_col_num_list: List[int]
         差分を確認する際に使用する列番号のリスト。
 
     Returns
     ----------
-    l: list
+    l: List[int]
         差分のある列番号を格納するlist型。
     """
     target_forest_info = target_forest_info.fillna('nan')
@@ -254,7 +254,7 @@ def _check_cell_address_list(target_ws, referred_ws, check_col_list: List[str],
 
     Returns:
     ----------
-    check_cell_address_list: list
+    check_cell_address_list: List[str]
         差分のあるtarget_wsのセル番地を格納するリスト型。
     """
     check_cell_address_list = []            
@@ -305,7 +305,7 @@ def _check_cell_address_list(target_ws, referred_ws, check_col_list: List[str],
                     r = t_df_index + row_offset + 1, c1 = check_col_list[0], c2 = check_col_list[-1]))
     return check_cell_address_list
 
-def check_cell_address_list_ikusei_info(target_ws, referred_ws) -> list[str]:
+def check_cell_address_list_ikusei_info(target_ws, referred_ws) -> List[str]:
     """概要
     2つの【吸収量（育成林）算定用】情報記入シート（001、003共通）を比較し、林地名をもとに林地情報を紐づける。
     両者に差があった場合、target_wsのセル番地をリストに格納して返す。
@@ -320,7 +320,7 @@ def check_cell_address_list_ikusei_info(target_ws, referred_ws) -> list[str]:
 
     Returns:
     ----------
-    check_cell_address_list: list
+    check_cell_address_list: List[str]
         差分のあるtarget_wsのセル番地を格納するリスト型。
     """
     return _check_cell_address_list(target_ws, referred_ws,
@@ -330,7 +330,7 @@ def check_cell_address_list_ikusei_info(target_ws, referred_ws) -> list[str]:
                                     settings.IKUSEI_INFO_PARAMS.COL_OFFSET,
                                     settings.IKUSEI_INFO_PARAMS.ROW_OFFSET)
 
-def check_cell_address_list_tennen_info(target_ws, referred_ws) -> list[str]:
+def check_cell_address_list_tennen_info(target_ws, referred_ws) -> List[str]:
     """概要
     2つの【吸収量（天然生林）算定用】情報記入シート（FO-001）を比較し、林地名をもとに林地情報を紐づける。
     両者に差があった場合、target_wsのセル番地をリストに格納して返す。
@@ -345,7 +345,7 @@ def check_cell_address_list_tennen_info(target_ws, referred_ws) -> list[str]:
 
     Returns:
     ----------
-    check_cell_address_list: list
+    check_cell_address_list: List[str]
         差分のあるtarget_wsのセル番地を格納するリスト型。
     """
     return _check_cell_address_list(target_ws, referred_ws,
@@ -370,7 +370,7 @@ def check_cell_address_list_in_pj_emission_info(target_ws, referred_ws) -> List[
 
     Returns:
     ----------
-    check_cell_address_list: list
+    check_cell_address_list: List[str]
         差分のあるtarget_wsのセル番地を格納するリスト型。
     """
     return _check_cell_address_list(target_ws, referred_ws,
@@ -395,7 +395,7 @@ def check_cell_address_list_out_pj_info(target_ws, referred_ws) -> List[str]:
 
     Returns:
     ----------
-    check_cell_address_list: list
+    check_cell_address_list: List[str]
         差分のあるtarget_wsのセル番地を格納するリスト型。
     """
     return _check_cell_address_list(target_ws, referred_ws,

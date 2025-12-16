@@ -173,7 +173,7 @@ def _OTHER_PARTICIPANTS_CHECK_LIST() -> List[str]:
 
     Returns
     ----------
-    l: list
+    l: List[str]
         代表以外のプロジェクト実施者もしくはプログラム型運営・管理者の値の比較をするセルを指定するlist型。
     """
     l = []
@@ -193,7 +193,7 @@ def _OTHER_PARTICIPANTS_COPY_LIST() -> List[str]:
 
     Returns
     ----------
-    l: list
+    l: List[str]
         代表以外のプロジェクト実施者もしくはプログラム型運営・管理者の書き込みセルを指定するlist型。
     """
     l = []
@@ -213,7 +213,7 @@ def _SKK_CHANGES_CHECK_LIST() -> List[str]:
 
     Returns
     ----------
-    l: list
+    l: List[str]
         森林経営計画の適用条件１への適用と計画の変遷（FO-001）の値の比較をするセルを指定するlist型。
     """
     l = SKK_CHANGES_PARAMS.OUT_OF_PATTERN_CELL_LIST
@@ -240,7 +240,7 @@ def _SKK_CHANGES_COPY_LIST() -> List[str]:
 
     Returns
     ----------
-    l: list
+    l: List[str]
         森林経営計画の適用条件１への適用と計画の変遷（FO-001）の書き込みセルを指定するlist型。
     """
     l = SKK_CHANGES_PARAMS.OUT_OF_PATTERN_CELL_LIST
@@ -267,7 +267,7 @@ def _MULTIPLE_SKK_INFO_CHECK_LIST() -> List[str]:
 
     Returns
     ----------
-    l: list
+    l: List[str]
         2.2 複数森林経営計画用（FO-001）の値の比較をするセルを指定するlist型。
     """
     l = []
@@ -287,7 +287,7 @@ def _MULTIPLE_SKK_INFO_COPY_LIST() -> List[str]:
 
     Returns
     ----------
-    l: list
+    l: List[str]
         2.2 複数森林経営計画用（FO-001）の書き込みセルを指定するlist型。
     """
     l = []
@@ -298,7 +298,18 @@ def _MULTIPLE_SKK_INFO_COPY_LIST() -> List[str]:
     return l
 
 def _IN_PJ_HWP_CHECK_LIST() -> List[str]:
-    """概要"""
+    """概要
+    【吸収量（PJ内HWP）】情報記入・算定シート（FO-001）の値の比較をするセルを指定するlist型を作成。
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    ----------
+    l: List[str]
+        【吸収量（PJ内HWP）】情報記入・算定シート（FO-001）の値の比較をするセルを指定するlist型。
+    """
     l = []
     for col in IN_PJ_HWP_PARAMS.SPECIES_CHECK_COLS:
         for row_num in range(IN_PJ_HWP_PARAMS.FIRST_ROW_NUM, \
