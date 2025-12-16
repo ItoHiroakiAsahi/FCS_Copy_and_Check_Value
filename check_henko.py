@@ -56,7 +56,7 @@ def make_diff_red(target_file_path: str, referred_file_path: str, overwrite: boo
                 target_sheet, referred_sheet,settings.COMPARE_AND_CHANGE_OTHER_CELL_VALUE_DICT[sheet_name])
 
     # 情報記入シートの差分を確認
-    for sheet_name in check_info_sheets.INFO_SHEET_LIST:
+    for sheet_name in settings.INFO_SHEET_LIST:
         target_ws = target_wb.Sheets(sheet_name.value)
         referred_ws = referred_wb.Sheets(sheet_name.value)
         if sheet_name == KeikakuSheet.IKUSEI_INFO:
@@ -79,7 +79,7 @@ def make_diff_red(target_file_path: str, referred_file_path: str, overwrite: boo
             target_ws.Range(address).Font.Color = Color.RED.value
 
     # 幹材積量算定シートの差分を確認
-    for sheet_name in check_rsh_sheets.RSH_SHEET_LIST:
+    for sheet_name in settings.RSH_SHEET_LIST:
         target_ws = target_wb.Sheets(sheet_name.value)
         referred_ws = referred_wb.Sheets(sheet_name.value)
         if sheet_name == KeikakuSheet.IKUSEI_RSH:

@@ -4,16 +4,9 @@
 """
 from typing import Union, Dict, List, Tuple
 import pandas as pd
-from constants import KeikakuSheet
 import settings
 import utils
 
-INFO_SHEET_LIST = [
-    KeikakuSheet.IKUSEI_INFO,
-    KeikakuSheet.TENNEN_INFO,
-    KeikakuSheet.IN_PJ_EMISSION_INFO,
-    KeikakuSheet.OUT_PJ_INFO,
-]
 _FOREST_NAME_COL_NAME = 'forest_name'
 
 def _get_max_row_from_ws(ws1, ws2) -> int:

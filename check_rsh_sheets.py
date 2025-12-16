@@ -7,11 +7,6 @@ from constants import KeikakuSheet
 import settings
 import utils
 
-RSH_SHEET_LIST = [
-    KeikakuSheet.IKUSEI_RSH,
-    KeikakuSheet.TENNEN_RSH
-]
-
 def _species_rank_list(value: tuple, col_interval: int) -> List[str]:
     """概要
     幹材積量算定シートを受け取り、樹種＋地位名のstr型を格納するlist型を返す。
