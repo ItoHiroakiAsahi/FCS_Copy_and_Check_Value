@@ -2,7 +2,9 @@
 プロジェクト計画書（計画変更届）の差分を赤字にする関数を定義する。
 """
 import argparse
+import datetime
 import os
+import re
 import win32com.client
 import check_info_sheets
 import check_rsh_sheets
@@ -10,7 +12,8 @@ import compare
 from constants import KeikakuSheet, Color
 import settings
 
-def make_diff_red(target_file_path: str, referred_file_path: str, save_path: str = '') -> None:
+def make_diff_red(target_file_path: str, referred_file_path: str, overwrite: bool = False,
+                  save_path: str = '') -> None:
     """"概要
     2つのプロジェクト計画書（計画変更届）を受け取り、差分を赤字で表示する。
 
@@ -22,8 +25,12 @@ def make_diff_red(target_file_path: str, referred_file_path: str, save_path: str
     referred_file_path: str
         差分を確認する際に参照するエクセルファイルのパスを示すstr型。
 
-    save_path: str
-        差分を赤字にしたファイルの保存先を示すstr型。
+    overwrite: bool, False
+        ファイルの上書きを行うか否かを示すbool型。デフォルトはFalse。
+
+    save_path: str, ''
+        ファイルの上書きを行わない場合に、差分を赤字にしたファイルの保存先を示すstr型。
+        ''が指定されている場合は、元のファイル名に時刻を加えて保存する。デフォルトは''。
 
     Returns
     ----------
@@ -86,11 +93,17 @@ def make_diff_red(target_file_path: str, referred_file_path: str, save_path: str
         for address in l:
             target_ws.Range(address).Font.Color = Color.RED.value
 
-    if save_path == '':
-        L = len('.xlsx')
-        save_path = target_file_path[:-L] + 'のコピー' + target_file_path[-L:]
     app.DisplayAlerts = False
-    target_wb.SaveAs(os.getcwd() + '/' + save_path)
+    if overwrite:
+        target_wb.Save()
+    else:
+        if save_path == '':
+            L = len('.xlsx')
+            last_ref_path = re.split('/|"\\"', referred_file_path)[-1]
+            dt = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+            save_path = target_file_path[:-L] + '_赤字変更(参照ファイル：{})_{}'\
+                .format(last_ref_path[:-L], dt) + target_file_path[-L:]
+        target_wb.SaveAs(os.getcwd() + '/' + save_path)
     target_wb.Close()
     referred_wb.Close()
     app.Quit()
