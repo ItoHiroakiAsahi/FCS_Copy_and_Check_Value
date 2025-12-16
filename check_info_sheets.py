@@ -71,7 +71,7 @@ def _add_forest_name(df: pd.DataFrame, forest_name_col_list: List[str]) -> pd.Da
         林地情報を格納するdataframe型。
 
     forest_name_col_list: List[str]
-        林地名に関連する情報を持つ列名を格納したlist型。
+        林地名に関連する情報を持つ列名を格納したList[str]型。
 
     Returns
     ----------
@@ -94,7 +94,7 @@ def _forest_info_diff_score(target_forest_info: pd.Series, referred_forest_info:
         乖離度を調べる林地情報。
 
     compare_col_num_list: List[int]
-        乖離度を計算する際に使用する列番号のリスト。
+        乖離度を計算する際に使用する列番号を格納するList[int]型。
 
     Returns
     ----------
@@ -132,7 +132,7 @@ def _forest_df_diff_dict(target_df: pd.DataFrame, referred_df: pd.DataFrame,
     ----------
     d: Dict[str, Dict[str, List[int]]]
         すべての林地情報同士の組み合わせにおいて、差分が認められる位置を格納したリスト型を
-        valueに持つdict型。
+        valueに持つDict[str, Dict[str, List[int]]]型。
     """
     d = {}
     # 抽出したすべての林地の組み合わせにおいて、値の異なるセル番地を抽出し、辞書型に保存
@@ -153,7 +153,7 @@ def _min_val_info_from_dict(d: Dict[str, Dict[str, List[int]]]) -> Tuple[int, in
     ----------
     d: Dict[str, Dict[str, List[int]]]
         すべての林地情報同士の組み合わせにおいて、差分が認められる位置を格納したリスト型を
-        valueに持つdict型。
+        valueに持つDict[str, Dict[str, List[int]]]型。
         
     Returns
     ----------
@@ -193,15 +193,15 @@ def _diff_col_num_list(target_forest_info: pd.Series, referred_forest_info: pd.S
     Parameters
     ----------
     target_forest_info, referred_forest_info: pd.Series
-        差分を比較する林地情報
+        差分を比較する林地情報。
 
     check_col_num_list: List[int]
-        差分を確認する際に使用する列番号のリスト。
+        差分を確認する際に使用する列番号を格納するList[int]型。
 
     Returns
     ----------
     l: List[int]
-        差分のある列番号を格納するlist型。
+        差分のある列番号を格納するList[int]型。
     """
     target_forest_info = target_forest_info.fillna('nan')
     referred_forest_info = referred_forest_info.fillna('nan')
@@ -231,13 +231,13 @@ def _check_cell_address_list(target_ws, referred_ws, check_col_list: List[str],
         差分を確認するための情報記入シート。
 
     check_col_list: List[str]
-        差分を確認する列の列名を格納するlist型。
+        差分を確認する列の列名を格納するList[str]型。
 
     forest_name_col_list: List[str]
-        林地名を格納する列の列名を格納するlist型。
+        林地名を格納する列の列名を格納するList[str]型。
 
     compare_col_list: List[str]
-        2つの林地情報の乖離度を調べるにあたって参照する列の列名を格納するlist型。
+        2つの林地情報の乖離度を調べるにあたって参照する列の列名を格納するList[str]型。
 
     col_offset: int
         列方向のオフセット数を示すint型。
@@ -248,7 +248,7 @@ def _check_cell_address_list(target_ws, referred_ws, check_col_list: List[str],
     Returns:
     ----------
     check_cell_address_list: List[str]
-        差分のあるtarget_wsのセル番地を格納するリスト型。
+        差分のあるtarget_wsのセル番地を格納するList[str]型。
     """
     check_cell_address_list = []            
     range_address = '{}{}:{}{}'.format(\
@@ -314,7 +314,7 @@ def check_cell_address_list_ikusei_info(target_ws, referred_ws) -> List[str]:
     Returns:
     ----------
     check_cell_address_list: List[str]
-        差分のあるtarget_wsのセル番地を格納するリスト型。
+        差分のあるtarget_wsのセル番地を格納するList[str]型。
     """
     return _check_cell_address_list(target_ws, referred_ws,
                                     settings.IKUSEI_INFO_PARAMS.CHECK_COL_LIST,
@@ -339,7 +339,7 @@ def check_cell_address_list_tennen_info(target_ws, referred_ws) -> List[str]:
     Returns:
     ----------
     check_cell_address_list: List[str]
-        差分のあるtarget_wsのセル番地を格納するリスト型。
+        差分のあるtarget_wsのセル番地を格納するList[str]型。
     """
     return _check_cell_address_list(target_ws, referred_ws,
                                     settings.TENNEN_INFO_PARAMS.CHECK_COL_LIST,
@@ -364,7 +364,7 @@ def check_cell_address_list_in_pj_emission_info(target_ws, referred_ws) -> List[
     Returns:
     ----------
     check_cell_address_list: List[str]
-        差分のあるtarget_wsのセル番地を格納するリスト型。
+        差分のあるtarget_wsのセル番地を格納するList[str]型。
     """
     return _check_cell_address_list(target_ws, referred_ws,
                                     settings.IN_PJ_EMISSION_INFO_PARAMS.CHECK_COL_LIST,
@@ -389,7 +389,7 @@ def check_cell_address_list_out_pj_info(target_ws, referred_ws) -> List[str]:
     Returns:
     ----------
     check_cell_address_list: List[str]
-        差分のあるtarget_wsのセル番地を格納するリスト型。
+        差分のあるtarget_wsのセル番地を格納するList[str]型。
     """
     return _check_cell_address_list(target_ws, referred_ws,
                                     settings.OUT_PJ_INFO_PARAMS.CHECK_COL_LIST,

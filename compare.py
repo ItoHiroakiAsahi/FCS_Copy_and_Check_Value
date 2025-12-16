@@ -149,6 +149,7 @@ def _write(sheet_name: KeikakuSheet, target_ws, address: str, referred_array: np
         if address in settings.NUM_TO_STR_ADDRESS_DICT[sheet_name]:
             referred_array = np.vectorize(utils.from_str_num_to_text)(referred_array)
     target_ws.Range(address).Value = referred_array
+    return
 
 def _make_red(target_ws, address: str) -> None:
     """概要

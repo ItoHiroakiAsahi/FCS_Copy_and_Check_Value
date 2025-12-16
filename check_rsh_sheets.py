@@ -52,7 +52,7 @@ def _check_cell_address_list_rsh(target_ws, referred_ws, col_offset: int, row_of
     Returns
     ----------
     check_cell_address_list: List[str]
-        差分のあるセルの番地を示すstr型を格納するlist型。
+        差分のあるセルの番地を示すstr型を格納するList[str]型。
     """
     check_cell_address_list = []
     bottom_right_cell_address = utils.get_cell_address_from_range_address(
@@ -102,7 +102,7 @@ def check_cell_address_list_ikusei_rsh(target_ws, referred_ws) -> List[str]:
     Returns
     ----------
     check_cell_address_list: List[str]
-        差分のあるセルの番地を示すstr型を格納するlist型。
+        差分のあるセルの番地を示すstr型を格納するList[str]型。
     """
     return _check_cell_address_list_rsh(target_ws, referred_ws, settings.IKUSEI_RSH_PARAMS.COL_OFFSET,
                                         settings.IKUSEI_RSH_PARAMS.ROW_OFFSET,
@@ -124,7 +124,7 @@ def check_cell_address_list_tennen_rsh(target_ws, referred_ws) -> List[str]:
     Returns
     ----------
     check_cell_address_list: List[str]
-        差分のあるセルの番地を示すstr型を格納するlist型。
+        差分のあるセルの番地を示すstr型を格納するList[str]型。
     """
     return _check_cell_address_list_rsh(target_ws, referred_ws, settings.TENNEN_RSH_PARAMS.COL_OFFSET,
                                         settings.TENNEN_RSH_PARAMS.ROW_OFFSET,
