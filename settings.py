@@ -94,6 +94,10 @@ class IKUSEI_INFO_PARAMS:
     FOREST_NAME_COL_LIST = [utils.toAlpha3(i) for i in range(4, 14)]
     COMPARE_COL_LIST = ['O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'AD']
 
+class IKUSEI_CALCULATION_PARAMS:
+    ROW_OFFSET = 45
+    CHECK_COL_LIST = ['AJ']
+
 class TENNEN_RSH_PARAMS:
     COL_INTERVAL = 4
     ROW_OFFSET = 13
@@ -109,6 +113,10 @@ class TENNEN_INFO_PARAMS:
     CHECK_COL_LIST = [utils.toAlpha3(i) for i in range(2, 21)]
     FOREST_NAME_COL_LIST = [utils.toAlpha3(i) for i in range(2, 12)]
     COMPARE_COL_LIST = ['M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T']
+
+class TENNEN_CALCULATION_PARAMS:
+    ROW_OFFSET = 45
+    CHECK_COL_LIST = ['AA']
 
 class IN_PJ_EMISSION_INFO_PARAMS:
     ROW_OFFSET = 10
@@ -387,4 +395,10 @@ INFO_SHEET_LIST = [
 RSH_SHEET_LIST = [
     KeikakuSheet.IKUSEI_RSH,
     KeikakuSheet.TENNEN_RSH
+]
+
+# 差分を比較する吸収量算定シート
+CALC_SHEET_LIST = [
+    KeikakuSheet.IKUSEI_CALCULATION,
+    KeikakuSheet.TENNEN_CALCULATION
 ]

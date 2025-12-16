@@ -6,6 +6,7 @@ import datetime
 import os
 import re
 import win32com.client
+import check_calc_sheets
 import check_info_sheets
 import check_rsh_sheets
 import compare
@@ -90,6 +91,17 @@ def make_diff_red(target_file_path: str, referred_file_path: str, overwrite: boo
             compare.perform(sheet_name, target_ws, referred_ws,
                             settings.TENNEN_RSH_PARAMS.OUT_OF_PATTERN_CELL_LIST, 'check')
             l = check_rsh_sheets.check_cell_address_list_tennen_rsh(target_ws, referred_ws)
+        for address in l:
+            target_ws.Range(address).Font.Color = Color.RED.value
+
+    # 吸収量算定シートの差分を確認
+    for sheet_name in settings.CALC_SHEET_LIST:
+        target_ws = target_wb.Sheets(sheet_name.value)
+        referred_ws = referred_wb.Sheets(sheet_name.value)
+        if sheet_name == KeikakuSheet.IKUSEI_CALCULATION:
+            l = check_calc_sheets.check_cell_address_list_ikusei_calc(target_ws, referred_ws)
+        elif sheet_name == KeikakuSheet.TENNEN_CALCULATION:
+            l = check_calc_sheets.check_cell_address_list_tennen_calc(target_ws, referred_ws)
         for address in l:
             target_ws.Range(address).Font.Color = Color.RED.value
 
