@@ -138,6 +138,20 @@ class OUT_PJ_INFO_PARAMS:
     COMPARE_COL_LIST = ['O', 'P', 'Q', 'R', 'S', 'U', 'AH', 'AI', 'AJ', 'AK', 'AM']
 
 def _OTHER_PARTICIPANTS_CHANGE_OTHER_CELL_VALUE_DICT() -> Dict[str, str]:
+    """概要
+    代表以外のプロジェクト実施者もしくはプログラム型運営・管理者の変更の有無を確認するセルと
+    値の更新をするセルの組み合わせを指定するdict型を作成。
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    ----------
+    d: Dict[str, str]
+        代表以外のプロジェクト実施者もしくはプログラム型運営・管理者の変更の有無を確認するセルと
+        値の更新をするセルの組み合わせを指定するdict型
+    """
     d = {}
     for i in range(0, OTHER_PARTICIPANTS_PARAMS.ROW_PATTERN_NUM):
         for range_address in OTHER_PARTICIPANTS_PARAMS.CHANGE_OTHER_CELL_VALUE_DICT_PATTERN.keys():
