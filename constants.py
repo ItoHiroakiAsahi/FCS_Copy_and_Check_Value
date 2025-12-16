@@ -55,3 +55,10 @@ class Color(Enum):
     エクセルの書き込みに使用する色の値を格納する。
     """
     RED = 0xFF
+
+class ChangeFlag(Enum):
+    """概要
+    書類に書き込む変更の有無のフラグ
+    """
+    CHANGED = "有"
+    NOT_CHANGED = "無"

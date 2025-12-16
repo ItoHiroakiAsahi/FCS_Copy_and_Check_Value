@@ -1,7 +1,6 @@
 """
 プロジェクト計画書（計画変更届）の差分を赤字にする関数を定義する。
 """
-
 import argparse
 import os
 import win32com.client
@@ -36,11 +35,18 @@ def make_diff_red(target_file_path: str, referred_file_path: str, save_path: str
     referred_wb = app.Workbooks.Open(os.getcwd() + '/' + referred_file_path)
 
     # シミュレーションに依存しない記入項目の差分を確認
-    for sheet_name in settings.COMPARE_CELL_ADDRESS_DICT.keys():
+    for sheet_name in list(set(list(settings.COMPARE_CELL_ADDRESS_DICT.keys()) 
+                               + list(settings.COMPARE_AND_CHANGE_OTHER_CELL_VALUE_DICT.keys()))):
         target_sheet = target_wb.Sheets(sheet_name.value)
         referred_sheet = referred_wb.Sheets(sheet_name.value)
-        compare.perform(sheet_name, target_sheet, referred_sheet, 
-                        settings.COMPARE_CELL_ADDRESS_DICT[sheet_name], 'check')
+        # 差分がある場合に、該当するセルを赤字に変更
+        if sheet_name in settings.COMPARE_CELL_ADDRESS_DICT.keys():
+            compare.perform(sheet_name, target_sheet, referred_sheet, 
+                            settings.COMPARE_CELL_ADDRESS_DICT[sheet_name], 'check')
+        # 差分の有無に応じて、変更の有無のセルの値を変更
+        if sheet_name in settings.COMPARE_AND_CHANGE_OTHER_CELL_VALUE_DICT.keys():
+            compare.compare_and_change_other_cell_value(
+                target_sheet, referred_sheet,settings.COMPARE_AND_CHANGE_OTHER_CELL_VALUE_DICT[sheet_name])
 
     # 情報記入シートの差分を確認
     for sheet_name in check_info_sheets.INFO_SHEET_LIST:

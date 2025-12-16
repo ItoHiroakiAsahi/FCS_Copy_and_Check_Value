@@ -1,11 +1,14 @@
 """
 コピーや差分比較時に参照するセル番地、範囲の情報を定義する。
 """
-
+from typing import List, Dict
 from constants import KeikakuSheet
 import utils
 
 class REGISTER_APPLICATION_PARAMS:
+    CHANGE_OTHER_CELL_VALUE_DICT = {'E26': 'P26', 'E27': 'P27', 'E28': 'P28', 'E29': 'P29', 
+                                    'E30': 'P30', 'E31': 'P31', 'E33': 'P33', 'E34': 'P34',
+                                    'E35': 'P35', 'E36': 'P36', 'E37': 'P37'}
     COPY_ADDRESS_LIST = ['E6:E7', 'G10', 'E11:E14', 'E16:I16', 'E17:E21', 'H18:P18', 'I23:I24',
                           'E26:E31', 'P26:P31', 'E33:E37', 'P33:P37', 'E42:E43', 'G45', 'E47', 'E50',
                           'E55', 'F56', 'H56', 'J56', 'E60', 'F61', 'H61', 'J61']
@@ -14,6 +17,8 @@ class REGISTER_APPLICATION_PARAMS:
 class OTHER_PARTICIPANTS_PARAMS:
     ROW_INTERVAL = 21
     ROW_PATTERN_NUM = 10
+    CHANGE_OTHER_CELL_VALUE_DICT_PATTERN = {'B9': 'M9', 'B10': 'M10', 'B11': 'M11', 'B12': 'M12',
+                                            'B13': 'M13', 'B14': 'M14'}
     CHECK_CELLS_PATTERN = ['D4', 'B5', 'B6', 'B8', 'D8', 'F8', 'B9', 'B10', 'B11', 'B12', 'B13', 'B14',
                            'M9', 'M10', 'M11', 'M12', 'M13', 'M14', 'B15', 'B17', 'B18', 'B19', 'E16:M16',
                            'G21', 'G22']
@@ -132,8 +137,19 @@ class OUT_PJ_INFO_PARAMS:
     FOREST_NAME_COL_LIST = [utils.toAlpha3(i) for i in range(4, 14)]
     COMPARE_COL_LIST = ['O', 'P', 'Q', 'R', 'S', 'U', 'AH', 'AI', 'AJ', 'AK', 'AM']
 
+def _OTHER_PARTICIPANTS_CHANGE_OTHER_CELL_VALUE_DICT() -> Dict[str, str]:
+    d = {}
+    for i in range(0, OTHER_PARTICIPANTS_PARAMS.ROW_PATTERN_NUM):
+        for range_address in OTHER_PARTICIPANTS_PARAMS.CHANGE_OTHER_CELL_VALUE_DICT_PATTERN.keys():
+            pre_address = utils.move_range_address(range_address, \
+                                                   down = i * OTHER_PARTICIPANTS_PARAMS.ROW_INTERVAL)
+            post_address = utils.move_range_address(OTHER_PARTICIPANTS_PARAMS.\
+                                                    CHANGE_OTHER_CELL_VALUE_DICT_PATTERN[range_address],
+                                                    down = i * OTHER_PARTICIPANTS_PARAMS.ROW_INTERVAL)
+            d[pre_address] = post_address
+    return d
     
-def _OTHER_PARTICIPANTS_CHECK_LIST() -> list:
+def _OTHER_PARTICIPANTS_CHECK_LIST() -> List[str]:
     """概要
     代表以外のプロジェクト実施者もしくはプログラム型運営・管理者の値の比較をするセルを指定するlist型を作成。
     
@@ -314,7 +330,7 @@ COPY_WIDTH_AND_HEIGHT_SHEET_LIST = [
 
 # 差分を確認して変更箇所を赤字にするセル番地の辞書形式
 COMPARE_CELL_ADDRESS_DICT = {
-    KeikakuSheet.OTHER_PARTICIPANTS: _OTHER_PARTICIPANTS_CHECK_LIST(),
+    KeikakuSheet.OTHER_PARTICIPANTS: _OTHER_PARTICIPANTS_CHECK_LIST(),                                          
     KeikakuSheet.CONFIRMATION_OF_CONDITION_5: CONFIRMATION_OF_CONDITION_5_PARAMS.CHECK_ADDRESS_LIST,
     KeikakuSheet.CONFIRMATION_OF_CONDITION_6: CONFIRMATION_OF_CONDITION_6_PARAMS.CHECK_ADDRESS_LIST,
     KeikakuSheet.PLAN_CHANGE_NORTIFICATION: PLAN_CHANGE_NORTIFICATION_PARAMS.CHECK_ADDRESS_LIST,
@@ -328,64 +344,8 @@ COMPARE_CELL_ADDRESS_DICT = {
     KeikakuSheet.IN_PJ_HWP: _IN_PJ_HWP_CHECK_LIST()
 }
 
-# class compare_cell_address_dict:
-#     """概要
-#     幹材積量算定シートにおいては、シートに記載されている
-#     """
-#     def __init__(self, wb1, wb2):
-#         value = COMPARE_CELL_ADDRESS_DICT
-#         value[KeikakuSheet.IKUSEI_RSH] = self._make_ikusei_rsh_list(\
-#             wb1.Sheet(KeikakuSheet.IKUSEI_RSH.value, wb2.Sheet(KeikakuSheet.IKUSEI_RSH.value)))
-#         value[KeikakuSheet.TENNEN_RSH] = self._make_tennen_rsh_list(\
-#             wb1.Sheet(KeikakuSheet.TENNEN_RSH.value, wb2.Sheet(KeikakuSheet.TENNEN_RSH.value)))
-#         self.value = value
-#         return
-
-#     def _make_ikusei_rsh_list(self, ws1, ws2):
-#         wk1 = ws1.UsedRange
-#         wk2 = ws2.UsedRange
-#         bottom_right_cell_address = utils.get_cell_address_from_range_address(\
-#             utils.get_max_range(wk1.Address, wk2.Address), loc='bottom_right')
-#         forest_rank_num = (utils.from_cell_address_to_column_row_int(bottom_right_cell_address)[0]
-#                            - IKUSEI_RSH_PARAMS.COL_OFFSET) // IKUSEI_RSH_PARAMS.COL_INTERVAL
-#         max_age = utils.from_cell_address_to_column_row_int(bottom_right_cell_address)[1] \
-#             - IKUSEI_RSH_PARAMS.ROW_OFFSET
-
-#         l = IKUSEI_RSH_PARAMS.OUT_OF_PATTERN_CELL_LIST
-#         for i in range(0, forest_rank_num):
-#             l.append(utils.move_cell_address(IKUSEI_RSH_PARAMS.SPECIES_RANK_REF_CELL_ADDRESS,
-#                                               right = i * IKUSEI_RSH_PARAMS.COL_INTERVAL))
-#             for j in range(0, max_age):
-#                 l.append(utils.move_cell_address(\
-#                     IKUSEI_RSH_PARAMS.VALUE_REF_CELL_ADDRESS, 
-#                     right = i * IKUSEI_RSH_PARAMS.COL_INTERVAL, down = j))
-#                 if j % 5 == 4:
-#                     l.append(utils.move_cell_address(\
-#                         IKUSEI_RSH_PARAMS.VALUE_REF_CELL_ADDRESS, 
-#                         right = i * IKUSEI_RSH_PARAMS.COL_INTERVAL + 1, down = j))
-#         return l
-    
-#     def _make_tennen_rsh_list(self, ws1, ws2):
-#         wk1 = ws1.UsedRange
-#         wk2 = ws2.UsedRange
-#         bottom_right_cell_address = utils.get_cell_address_from_range_address(\
-#             utils.get_max_range(wk1.Address, wk2.Address), loc='bottom_right')
-#         forest_rank_num = (utils.from_cell_address_to_column_row_int(bottom_right_cell_address)[0]
-#                            - TENNEN_RSH_PARAMS.COL_OFFSET) // TENNEN_RSH_PARAMS.COL_INTERVAL
-#         max_age = utils.from_cell_address_to_column_row_int(bottom_right_cell_address)[1] \
-#             - TENNEN_RSH_PARAMS.ROW_OFFSET
-
-#         l = TENNEN_RSH_PARAMS.OUT_OF_PATTERN_CELL_LIST
-#         for i in range(0, forest_rank_num):
-#             l.append(utils.move_cell_address(TENNEN_RSH_PARAMS.SPECIES_RANK_REF_CELL_ADDRESS, 
-#                                               right = i * TENNEN_RSH_PARAMS.COL_INTERVAL))
-#             for j in range(0, max_age):
-#                 l.append(utils.move_cell_address(\
-#                     TENNEN_RSH_PARAMS.VALUE_REF_CELL_ADDRESS, 
-#                     right = i * TENNEN_RSH_PARAMS.COL_INTERVAL, down = j))
-#                 if j % 5 == 4:
-#                     l.append(utils.move_cell_address(\
-#                         TENNEN_RSH_PARAMS.VALUE_REF_CELL_ADDRESS, 
-#                         right = i * TENNEN_RSH_PARAMS.COL_INTERVAL + 1, down = j))
-#         return l
-        
+# 差分がある場合、別のセルの値を変更するセル番地の辞書形式
+COMPARE_AND_CHANGE_OTHER_CELL_VALUE_DICT = {
+    KeikakuSheet.REGISTER_APPLICATION: REGISTER_APPLICATION_PARAMS.CHANGE_OTHER_CELL_VALUE_DICT,
+    KeikakuSheet.OTHER_PARTICIPANTS: _OTHER_PARTICIPANTS_CHANGE_OTHER_CELL_VALUE_DICT()
+}
