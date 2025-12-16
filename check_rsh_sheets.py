@@ -80,7 +80,7 @@ def _check_cell_address_list_rsh(target_ws, referred_ws, col_offset: int, row_of
                 if target_value[age + 2][t_col] != referred_value[age + 2][r_col]:
                     check_cell_address_list.append('{}{}'.format(
                         utils.toAlpha3(t_col + col_offset + 1),
-                        age + row_offset + 1))
+                        age + row_offset))
         else:
             check_cell_address_list.append('{}{}'.format(
                 utils.toAlpha3(t_col + col_offset + 1),
