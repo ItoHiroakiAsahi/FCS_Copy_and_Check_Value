@@ -2,8 +2,10 @@
 プロジェクト計画書（計画変更届）の
 シミュレーションに依存しない項目の書き写しを行う関数を定義する。
 """
-import os
 import argparse
+import datetime
+import os
+import re
 import numpy as np
 import pandas as pd
 import win32com.client
@@ -52,7 +54,7 @@ def _copy_col_width_row_height(target_ws, referred_ws) -> None:
     return
 
 def copy_keikaku_value(target_keikaku_path: str, referred_keikaku_path: str,
-                       save_path: str = '', ver: str = '1.3.0') -> None:
+                       save_path: str = '', ver: str = '1.3.0', overwrite: bool = False) -> None:
     """概要
     プロジェクト登録書に記載された内容のうち、シミュレーションに依存しない項目を
     別のプロジェクト登録書に対して書き写す。
@@ -77,7 +79,6 @@ def copy_keikaku_value(target_keikaku_path: str, referred_keikaku_path: str,
     """
     if ver != '1.3.0':
         raise ValueError('現在プロジェクト登録書のフォーマットは1.3.0のみしか対応していません。')
-    print('excelファイルを開いています。')
     app = win32com.client.Dispatch('Excel.Application')
     app.Visible = True
     target_wb = app.Workbooks.Open(os.getcwd() + '/' + target_keikaku_path)
@@ -94,11 +95,17 @@ def copy_keikaku_value(target_keikaku_path: str, referred_keikaku_path: str,
         # 行の高さ、列の幅を反映
         _copy_col_width_row_height(target_ws, referred_ws)
 
-    if save_path == '':
-        L = len('.xlsx')
-        save_path = target_keikaku_path[:-L] + 'のコピー' + target_keikaku_path[-L:]
     app.DisplayAlerts = False
-    target_wb.SaveAs(os.getcwd() + '/' + save_path)
+    if overwrite:
+        target_wb.Save()
+    else:
+        if save_path == '':
+            L = len('.xlsx')
+            last_ref_path = re.split('/|"\\"', referred_keikaku_path)[-1]
+            dt = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+            save_path = target_keikaku_path[:-L] + '_コピー(参照ファイル：{})_{}'\
+                .format(last_ref_path[:-L], dt) + target_keikaku_path[-L:]
+        target_wb.SaveAs(os.getcwd() + '/' + save_path)
     target_wb.Close()
     referred_wb.Close()
     app.Quit()
