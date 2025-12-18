@@ -37,6 +37,7 @@ class PLAN_CHANGE_NORTIFICATION_PARAMS:
                           'E29', 'I29', 'K29', 'M29', 'E30', 'E31', 'E32', 'E33']
     COPY_ADDRESS_LIST = ['E5', 'F6', 'H6', 'J6', 'E7:E10', 'E21:E22',
                          'E29:E33', 'I29', 'K29', 'M29']
+    CHECK_TEXT_CELL_LIST = ['E10', 'E33']
 
 class OVERVIEW_PARAMS:
     CHECK_ADDRESS_LIST = ['C8', 'E17', 'C18', 'C19', 'C21', 'E21', 'G21', 'A22', 'C26', 'G26']
@@ -49,6 +50,7 @@ class METHODOLOGY_FO001_PARAMS:
                           'D86', 'D88', 'G87', 'B89']
     COPY_ADDRESS_LIST = ['I3', 'D5', 'D7', 'D10', 'A24', 'A29', 'A33', 'A39', 'A43', 'A47:A48', 
                          'I57', 'B82:B85', 'D86:D88', 'G87', 'B89']
+    CHECK_TEXT_CELL_LIST = ['D5', 'D10', 'A24', 'A29', 'A33', 'A39', 'A43', 'B82', 'B83', 'B84', 'B85', 'B89']
 
 class SKK_CHANGES_PARAMS:
     ROW_INTERVAL = 11
@@ -64,19 +66,23 @@ class MULTIPLE_SKK_INFO_PARAMS:
     COL_PATTERN_NUM = 20
     CHECK_CELLS_PATTERN = ['A10', 'A14', 'A19']
     COPY_CELLS_PATTERN = ['A10', 'A14', 'A19']
+    CHECK_TEXT_CELL_PATTERN = ['A10', 'A14', 'A19']
 
 class DATA_MANAGEMENT_PARAMS:
     CHECK_ADDRESS_LIST = ['E4', 'E5', 'E9', 'M13', 'M14']
     COPY_ADDRESS_LIST = ['E4:E5', 'E9', 'M13:M14']
+    CHECK_TEXT_CELL_LIST = ['E9']
 
 class SPECIAL_NOTES_PARAMS:
     CHECK_ADDRESS_LIST = ['F3', 'F4', 'A6', 'F10', 'F11', 'D13', 'D14', 'I14', 
                           'D17', 'D18', 'E21', 'E23']
     COPY_ADDRESS_LIST = ['F3:F4', 'A6', 'F10:F11', 'D13', 'D14', 'I14', 'D17:D18', 'E21', 'E23']
+    CHECK_TEXT_CELL_LIST = ['A6', 'E23']
 
 class MONITORING_PLAN_FO001_PARAMS:
     CHECK_ADDRESS_LIST = utils.from_range_address_list_to_each_cell_adress_list(['K4:AQ53'])
     COPY_ADDRESS_LIST = ['K4:AQ53']
+    CHECK_TEXT_CELL_LIST = utils.from_range_address_list_to_each_cell_adress_list(['O4:AQ53'])
 
 class IKUSEI_RSH_PARAMS:
     COL_INTERVAL = 4
@@ -305,6 +311,25 @@ def _MULTIPLE_SKK_INFO_COPY_LIST() -> List[str]:
                 right = i * MULTIPLE_SKK_INFO_PARAMS.COL_INTERVAL))
     return l
 
+def _MULTIPLE_SKK_INFO_CHECK_TEXT_LIST() -> List[str]:
+    """概要
+    
+    Parameters
+    ----------
+    None
+
+    Returns
+    ----------
+    l: List[str]
+        2.2 複数森林経営計画用（FO-001）の文字列の比較をするセルを指定するlist型。
+    """
+    l = []
+    for i in range(0, MULTIPLE_SKK_INFO_PARAMS.COL_PATTERN_NUM):
+        for cell in MULTIPLE_SKK_INFO_PARAMS.CHECK_TEXT_CELL_PATTERN:
+            l.append(utils.move_range_address(cell, \
+                right = i * MULTIPLE_SKK_INFO_PARAMS.COL_INTERVAL))
+    return l
+
 def _IN_PJ_HWP_CHECK_LIST() -> List[str]:
     """概要
     【吸収量（PJ内HWP）】情報記入・算定シート（FO-001）の値の比較をするセルを指定するlist型を作成。
@@ -402,3 +427,13 @@ CALC_SHEET_LIST = [
     KeikakuSheet.IKUSEI_CALCULATION,
     KeikakuSheet.TENNEN_CALCULATION
 ]
+
+# 差分がある場合、文字列の値を検証するセル番地の辞書形式
+CHECK_TEXT_CELL_DICT = {
+    KeikakuSheet.PLAN_CHANGE_NORTIFICATION: PLAN_CHANGE_NORTIFICATION_PARAMS.CHECK_TEXT_CELL_LIST,
+    KeikakuSheet.METHODOLOGY_FO001: METHODOLOGY_FO001_PARAMS.CHECK_TEXT_CELL_LIST,
+    KeikakuSheet.MULTIPLE_SKK_INFO: _MULTIPLE_SKK_INFO_CHECK_TEXT_LIST(),
+    KeikakuSheet.DATA_MANAGEMENT: DATA_MANAGEMENT_PARAMS.CHECK_TEXT_CELL_LIST,
+    KeikakuSheet.SPECIAL_NOTES: SPECIAL_NOTES_PARAMS.CHECK_TEXT_CELL_LIST,
+    KeikakuSheet.MONITORING_PLAN_FO001: MONITORING_PLAN_FO001_PARAMS.CHECK_TEXT_CELL_LIST
+}

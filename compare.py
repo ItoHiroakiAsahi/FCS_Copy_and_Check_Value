@@ -4,6 +4,7 @@
 """
 from typing import List, Dict, Tuple, Optional
 import numpy as np
+import compare_text_value
 from constants import KeikakuSheet, Color, ChangeFlag
 import settings
 import utils
@@ -30,7 +31,7 @@ def _extract_array(array: np.array, relative_address_loc: Tuple[Tuple[int]]) -> 
 
 def _is_same(address: str, referred_cell_loc: str, target_value: np.array, 
              referred_value: np.array, return_value_address: Optional[str] = None)\
-                -> Tuple[bool, Optional[np.array]]:
+                -> Tuple[bool, Optional[np.array], Optional[np.array], Optional[np.array]]:
     """概要
     与えられたaddress, referred_cell_locから求まる相対位置の範囲に対して、
     2つのnp.array型を比較し、両者の値が同一であるか否かのbool型と、
@@ -66,16 +67,16 @@ def _is_same(address: str, referred_cell_loc: str, target_value: np.array,
         target_array = _extract_array(target_value, relative_address_loc)
         referred_array = _extract_array(referred_value, relative_address_loc)
         if return_value_address is None:
-            return (referred_array == target_array).all(), referred_array
+            return (referred_array == target_array).all(), referred_array, target_array
         else:
             return_address_loc = utils.relative_range_address_loc(return_value_address, 
                                                                   referred_cell_loc)
             return_array = _extract_array(referred_value, return_address_loc)
-            return (referred_array == target_array).all(), return_array
+            return (referred_array == target_array).all(), return_array, target_array
     except Exception as e:
         print(e)
         print(address)
-        return False, None
+        return False, None, None
 
 def perform(sheet_name: KeikakuSheet, target_ws, referred_ws, 
             compare_address_list: List[str], how: str) -> None:
@@ -118,7 +119,7 @@ def perform(sheet_name: KeikakuSheet, target_ws, referred_ws,
             if how == 'copy':
                 _write(sheet_name, target_ws, address, check_tuple[1])
             elif how == 'check':
-                _make_red(target_ws, address)
+                _make_red(sheet_name, target_ws, address, check_tuple[1], check_tuple[2])
             else:
                 raise ValueError('howにはcopyまたはcheckを指定してください。')
     return
@@ -151,7 +152,8 @@ def _write(sheet_name: KeikakuSheet, target_ws, address: str, referred_array: np
     target_ws.Range(address).Value = referred_array
     return
 
-def _make_red(target_ws, address: str) -> None:
+def _make_red(sheet_name, target_ws, address: str, referred_array: np.array, 
+              target_array: np.array) -> None:
     """概要
     ワークシートに対して、指定したアドレスの字を赤字にする。
     
@@ -167,7 +169,17 @@ def _make_red(target_ws, address: str) -> None:
     ----------
     None
     """
-    target_ws.Range(address).Font.Color = Color.RED.value
+    if sheet_name in settings.CHECK_TEXT_CELL_DICT.keys() \
+        and address in settings.CHECK_TEXT_CELL_DICT[sheet_name]:
+        print(sheet_name.value, address)
+        # 範囲が指定されている場合は先頭のセルのみ対応
+        red_char_num_list = compare_text_value.find_text_diff(
+            target_array[0][0], referred_array[0][0])
+        for red_char_num in red_char_num_list:
+            target_ws.Range(address).GetCharacters(red_char_num[0] + 1, red_char_num[1]
+                                                   ).Font.Color = Color.RED.value
+    else:
+        target_ws.Range(address).Font.Color = Color.RED.value
     return
 
 def compare_and_change_other_cell_value(target_ws, referred_ws, 
